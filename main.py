@@ -48,6 +48,11 @@ class Tweet(BaseModel):
     pass
 
 # Paths
-@app.get(path='/')
+@app.get(
+    path='/',
+    status_code=status.HTTP_200_OK,
+    tags=['Home'],
+    summary='Home path'
+)
 def home():
     return {"Twitter API": "Working!"}
