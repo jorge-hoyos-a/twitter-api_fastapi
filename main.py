@@ -1,6 +1,7 @@
 #Python
 from uuid import UUID
 from datetime import date
+from datetime import datetime
 from typing import Optional
 from enum import Enum
 
@@ -26,6 +27,7 @@ class UserLogin(UserBase):
     password: str = Field(
         ...,
         min_length=8,
+        max_length=64,
         example='kjh23kjh'
     )
     
@@ -45,9 +47,22 @@ class User(UserBase):
     birth_date: Optional[date] = Field(default=None)
 
 class Tweet(BaseModel):
-    pass
+    tweet_id: UUID = Field(...)
+    content: str = Field(
+        ...,
+        min_length=1,
+        max_length=256
+    )
+    created_at: date = Field(default=datetime.now())
+    updated_at: Optional[datetime] = Field(default=None)
+    by: User = Field(...)
 
 # Paths
-@app.get(path='/')
+@app.get(
+    path='/',
+    status_code=status.HTTP_200_OK,
+    tags=['Home'],
+    summary='Home path'
+)
 def home():
     return {"Twitter API": "Working!"}
